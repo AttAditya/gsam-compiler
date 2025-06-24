@@ -1,0 +1,37 @@
+saves
+ "bottle_count"
+ 99
+
+component
+ "print_bottle"
+ "args2"
+ script
+  output
+   args2
+    0
+   " bottles of beer on the wall, "
+   endline
+
+component
+ "throw_bottle"
+ "args"
+ script
+  print_bottle
+   bottle_count
+  saves
+   "bottle_count"
+   subtract
+    bottle_count
+    1
+
+component
+ "main"
+ "args"
+ script
+  loop
+   not_equals
+    bottle_count
+    -1
+   throw_bottle
+
+main

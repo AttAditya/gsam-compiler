@@ -1,0 +1,14 @@
+component
+ "hello"
+ "args"
+ script
+  output
+   "Hello, "
+   args
+    0
+   "!"
+   endline
+
+hello
+ "world"
+
