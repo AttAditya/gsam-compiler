@@ -49,7 +49,7 @@ def boolean(
   args.append(BaseNode(type=NodeType.BOOLEAN, float_value=False))
   return BaseNode(
     type=NodeType.BOOLEAN,
-    float_value=args[0].fetch_bool()
+    bool_value=args[0].fetch_bool()
   )
 
 @register_fn(fn_exports)

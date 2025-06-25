@@ -1,0 +1,17 @@
+component
+ "double"
+ "args"
+ script
+  returns
+   multiply
+    2
+    numeric
+     args
+      0
+
+output
+ "result: "
+ double
+  input
+   "number: "
+ endline

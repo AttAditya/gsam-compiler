@@ -1,4 +1,5 @@
 from src.models.node_type import NodeType
+from src.models.node_signal import NodeSignal
 from src.models.base_node import BaseNode
 from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
@@ -84,3 +85,16 @@ def saves(
 
   fn_lib[name] = variable_fn
   return value
+
+@register_fn(fn_exports)
+def returns(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) == 0:
+    return BaseNode()
+  
+  args[0].signal = NodeSignal.RETURN
+  return args[0]
+

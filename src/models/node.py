@@ -3,6 +3,7 @@ from typing import Self, TypeAlias, Callable
 
 from .node_type import NodeType
 from .base_node import BaseNode
+from .node_signal import NodeSignal
 
 class Node(BaseNode):
   executes: str | None
@@ -51,6 +52,7 @@ class Node(BaseNode):
   ) -> tuple[BaseNode, Node | None]:
     current: Node | None = self.script
     args: list[BaseNode] = []
+    result: BaseNode = BaseNode()
 
     while current is not None:
       next_node = None
@@ -58,18 +60,27 @@ class Node(BaseNode):
       if not current.high_order:
         value, next_node = current.execute(fn_lib, ho_lib)
         args.append(value)
+
+        if value.signal == NodeSignal.RETURN:
+          result = value
+          break
       else:
         next_node = current.high_order_execute(fn_lib, ho_lib)
       
       current = next_node
 
-    result: BaseNode = BaseNode()
-    if self.executes is not None:
-      result = fn_lib[self.executes](
-        args,
-        self,
-        fn_lib
-      )
+    if result.signal == NodeSignal.RETURN:
+      result.signal = None
+      return result, self.next
+
+    if self.executes is None:
+      return result, self.next
+    
+    result = fn_lib[self.executes](
+      args,
+      self,
+      fn_lib
+    )
 
     return result, self.next
 
