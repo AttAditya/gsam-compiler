@@ -2,30 +2,22 @@ from src.models.node_type import NodeType
 from src.models.base_node import BaseNode
 from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
-from src.internals.registry import register_exec_fn, register_ho_fn
+from src.internals.registry import (
+  register_fn,
+  register_ho,
+  setup as setup_registry
+)
 
-registered_exec_fns: list[ExecFn] = []
-def register_fn(fn: ExecFn) -> ExecFn:
-  registered_exec_fns.append(fn)
-  return fn
-
-registered_ho_fns: list[HOExecFn] = []
-def register_ho(fn: HOExecFn) -> HOExecFn:
-  registered_ho_fns.append(fn)
-  return fn
-
+fn_exports: list[ExecFn] = []
+ho_exports: list[HOExecFn] = []
 def setup(fn_lib: FnLib, ho_lib: HOLib) -> None:
-  for fn in registered_exec_fns:
-    register_exec_fn(fn_lib)(fn)
+  setup_registry(fn_lib, ho_lib, fn_exports, ho_exports)
 
-  for fn in registered_ho_fns:
-    register_ho_fn(ho_lib)(fn)
-
-@register_fn
+@register_fn(fn_exports)
 def script(*_) -> BaseNode:
   return BaseNode()
 
-@register_ho
+@register_ho(ho_exports)
 def component(
   node: Node,
   fn_lib: FnLib,
@@ -75,7 +67,7 @@ def component(
   
   return node.next
 
-@register_fn
+@register_fn(fn_exports)
 def saves(
   args: list[BaseNode],
   _: Node | None = None,

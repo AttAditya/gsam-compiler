@@ -1,6 +1,6 @@
 from src.models.node import FnLib, HOLib
 
-from .clio import setup as setup_clio
+from .console import setup as setup_clio
 from .literals import setup as setup_literals
 from .component import setup as setup_component
 from .operators import setup as setup_operators
