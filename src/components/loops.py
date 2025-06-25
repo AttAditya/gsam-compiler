@@ -1,7 +1,7 @@
-from models.node_type import NodeType
-from models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
+from src.models.node_type import NodeType
+from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
-from internals.registry import register_exec_fn, register_ho_fn
+from src.internals.registry import register_exec_fn, register_ho_fn
 
 registered_exec_fns: list[ExecFn] = []
 def register_fn(fn: ExecFn) -> ExecFn:

@@ -1,6 +1,6 @@
-from models.base_node import BaseNode
-from models.node_type import NodeType
-from models.node import Node
+from src.models.base_node import BaseNode
+from src.models.node_type import NodeType
+from src.models.node import Node
 
 def identify(content: str) -> str:
   if len(content) > 2 and content[0] == '"' and content[-1] == '"':

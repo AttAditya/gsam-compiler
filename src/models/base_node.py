@@ -1,5 +1,5 @@
 from typing import Self
-from models.node_type import NodeType
+from .node_type import NodeType
 
 class BaseNode:
   type: str

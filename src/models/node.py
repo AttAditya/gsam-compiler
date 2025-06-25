@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import Self, TypeAlias, Callable
 
-from models.node_type import NodeType
-from models.base_node import BaseNode
+from .node_type import NodeType
+from .base_node import BaseNode
 
 class Node(BaseNode):
   executes: str | None

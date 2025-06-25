@@ -1,4 +1,4 @@
-from models.node import FnLib, HOLib
+from src.models.node import FnLib, HOLib
 
 from .clio import setup as setup_clio
 from .literals import setup as setup_literals

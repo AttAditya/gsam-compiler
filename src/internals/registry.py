@@ -1,6 +1,6 @@
 from typing import Callable
 
-from models.node import (
+from src.models.node import (
   ExecFn,
   FnLib,
   HOExecFn,
