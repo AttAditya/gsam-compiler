@@ -1,8 +1,10 @@
+from src.models.node_type import NodeType
 from src.models.node import ExecFn, HOExecFn, FnLib, HOLib
 from src.models.base_node import BaseNode
 
 from src.internals.registry import (
   register_fn,
+  rename_fn,
   setup as setup_registry
 )
 
@@ -31,4 +33,24 @@ def output(
   )
 
   return BaseNode()
+
+@register_fn(fn_exports)
+@rename_fn("input")
+def input_fn(
+  args: list[BaseNode],
+  *_,
+) -> BaseNode:
+  if not args:
+    return BaseNode()
+  
+  prompt: str = ""
+  if len(args) >= 1:
+    prompt = args[0].fetch_str()
+
+  input_value = input(prompt)
+
+  return BaseNode(
+    type=NodeType.TEXT,
+    str_value=input_value
+  )
 

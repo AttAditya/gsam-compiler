@@ -1,4 +1,3 @@
-from src.models.node_type import NodeType
 from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
 from src.internals.registry import (
@@ -21,8 +20,6 @@ def loop(
   if condition_node is None: return node.next
 
   condition, loop_node = condition_node.execute(fn_lib, ho_lib)
-  if condition.type != NodeType.BOOLEAN:
-    return node.next
   
   while condition.fetch_bool() and loop_node:
     loop_node.execute(fn_lib, ho_lib)

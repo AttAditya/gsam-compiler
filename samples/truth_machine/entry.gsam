@@ -1,0 +1,34 @@
+component
+ "zero_once"
+ "args"
+ script
+  output
+   "0"
+
+component
+ "forever_ones"
+ "args"
+ script
+  loop
+   args
+    0
+   output
+    1
+    endline
+
+component
+ "main"
+ "args"
+ script
+  saves
+   "condition"
+   numeric
+    input
+     "Pick from 0 or 1: "
+  if
+   condition
+   forever_ones
+    condition
+   zero_once
+
+main

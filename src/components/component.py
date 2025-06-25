@@ -27,14 +27,14 @@ def component(
   if name_node is None: return None
   
   component_name, args_node = name_node.execute(fn_lib, ho_lib)
-  if component_name.type != NodeType.STRING:
+  if component_name.type != NodeType.TEXT:
     return None
   
   if args_node is None:
     return None
   
   args_name, script_node = args_node.execute(fn_lib, ho_lib)
-  if args_name.type != NodeType.STRING:
+  if args_name.type != NodeType.TEXT:
     return None
   
   def component_fn(

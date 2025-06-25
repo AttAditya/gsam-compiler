@@ -26,7 +26,40 @@ def base(
 @register_fn(fn_exports)
 def endline(*_) -> BaseNode:
   return BaseNode(
-    type=NodeType.STRING,
+    type=NodeType.TEXT,
     str_value="\n"
+  )
+
+@register_fn(fn_exports)
+def numeric(
+  args: list[BaseNode],
+  *_,
+) -> BaseNode:
+  args.append(BaseNode(type=NodeType.NUMERIC, float_value=0.0))
+  return BaseNode(
+    type=NodeType.NUMERIC,
+    float_value=args[0].fetch_float()
+  )
+
+@register_fn(fn_exports)
+def boolean(
+  args: list[BaseNode],
+  *_,
+) -> BaseNode:
+  args.append(BaseNode(type=NodeType.BOOLEAN, float_value=False))
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    float_value=args[0].fetch_bool()
+  )
+
+@register_fn(fn_exports)
+def text(
+  args: list[BaseNode],
+  *_,
+) -> BaseNode:
+  args.append(BaseNode(type=NodeType.TEXT, str_value=""))
+  return BaseNode(
+    type=NodeType.TEXT,
+    str_value=args[0].fetch_str()
   )
 

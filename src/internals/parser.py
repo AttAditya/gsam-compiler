@@ -4,7 +4,7 @@ from src.models.node import Node
 
 def identify(content: str) -> str:
   if len(content) > 2 and content[0] == '"' and content[-1] == '"':
-    return NodeType.STRING
+    return NodeType.TEXT
   
   nums: int = 0
   decimals: int = 0
@@ -47,7 +47,7 @@ def convert(
   float_value: float | None = None
   bool_value: bool | None = None
 
-  if content_type == NodeType.STRING:
+  if content_type == NodeType.TEXT:
     str_value = content[1:-1]
     
   if content_type == NodeType.NUMERIC:

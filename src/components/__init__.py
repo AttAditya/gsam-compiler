@@ -1,10 +1,11 @@
 from src.models.node import FnLib, HOLib
 
 from .console import setup as setup_clio
-from .literals import setup as setup_literals
+from .literal import setup as setup_literals
 from .component import setup as setup_component
-from .operators import setup as setup_operators
-from .loops import setup as setup_loops
+from .operator import setup as setup_operators
+from .loop import setup as setup_loops
+from .control import setup as setup_control
 
 def setup(fn_lib: FnLib, ho_lib: HOLib) -> None:
   setup_clio(fn_lib, ho_lib)
@@ -12,4 +13,5 @@ def setup(fn_lib: FnLib, ho_lib: HOLib) -> None:
   setup_component(fn_lib, ho_lib)
   setup_operators(fn_lib, ho_lib)
   setup_loops(fn_lib, ho_lib)
+  setup_control(fn_lib, ho_lib)
 

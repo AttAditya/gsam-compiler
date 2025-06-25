@@ -7,6 +7,20 @@ from src.models.node import (
   HOLib,
 )
 
+def rename_fn(name: str) -> Callable[[ExecFn], ExecFn]:
+  def decorator(fn: ExecFn) -> ExecFn:
+    fn.__name__ = name
+    return fn
+  
+  return decorator
+
+def rename_ho(name: str) -> Callable[[HOExecFn], HOExecFn]:
+  def decorator(fn: HOExecFn) -> HOExecFn:
+    fn.__name__ = name
+    return fn
+  
+  return decorator
+
 def register_exec_fn(
   lib: FnLib,
 ) -> Callable[[ExecFn], ExecFn]:

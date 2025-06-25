@@ -37,7 +37,13 @@ class BaseNode:
       if self.bool_value is not None:
         return 1.0 if self.bool_value else 0.0
       
-      return 0.0
+      numeric_value = 0
+      try:
+        numeric_value = float(self.fetch_str())
+      except ValueError:
+        pass
+      
+      return numeric_value
     
     return self.float_value
   
