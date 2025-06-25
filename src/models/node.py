@@ -50,6 +50,10 @@ class Node(BaseNode):
     fn_lib: FnLib,
     ho_lib: HOLib,
   ) -> tuple[BaseNode, Node | None]:
+    if self.high_order:
+      next_node = self.high_order_execute(fn_lib, ho_lib)
+      return BaseNode(), next_node
+    
     current: Node | None = self.script
     args: list[BaseNode] = []
     result: BaseNode = BaseNode()

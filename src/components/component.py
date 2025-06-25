@@ -80,8 +80,20 @@ def saves(
   name: str = args[0].fetch_str()
   value: BaseNode = args[1]
 
-  def variable_fn(*_) -> BaseNode:
-    return value
+  def variable_fn(
+    args: list[BaseNode],
+    node: Node | None = None,
+    fn_lib: FnLib = {},
+  ) -> BaseNode:
+    if value.type != NodeType.GHOST:
+      return value
+    
+    ghost_value = value.ghost_value
+    if f"{ghost_value}:primary" not in fn_lib:
+      return value
+    
+    variable_fn = fn_lib[f"{ghost_value}:primary"]
+    return variable_fn(args, node, fn_lib)
 
   fn_lib[name] = variable_fn
   return value

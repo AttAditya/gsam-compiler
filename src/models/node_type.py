@@ -3,5 +3,6 @@ class NodeType:
   NUMERIC: str = "NUMERIC"
   TEXT: str = "STRING"
   BOOLEAN: str = "BOOLEAN"
+  GHOST: str = "GHOST"
   NODE: str = "NODE"
 

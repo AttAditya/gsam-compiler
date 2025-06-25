@@ -8,6 +8,7 @@ class BaseNode:
   str_value: str | None
   float_value: float | None
   bool_value: bool | None
+  ghost_value: str | None = None
   signal: str | None = None
 
   def __init__(
@@ -17,6 +18,7 @@ class BaseNode:
     str_value: str | None = None,
     float_value: float | None = None,
     bool_value: bool | None = None,
+    ghost_value: str | None = None,
     signal: str | None = None,
   ) -> None:
     self.base = base
@@ -26,6 +28,8 @@ class BaseNode:
     self.str_value = str_value
     self.float_value = float_value
     self.bool_value = bool_value
+
+    self.ghost_value = ghost_value
 
   def fetch_str(self: Self) -> str:
     if self.type == NodeType.NUMERIC:
