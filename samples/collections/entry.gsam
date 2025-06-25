@@ -7,9 +7,13 @@ saves
   4
   5
 
+push
+ nums
+ 20
+
 output
  "num: "
  nums
-  0
+  5
  endline
 
