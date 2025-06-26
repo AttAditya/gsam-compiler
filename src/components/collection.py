@@ -22,39 +22,39 @@ def collection(
   ghost_id: str = generate_ghost_id()
   
   def fetch_fn(
-    args_fn_args: list[BaseNode],
+    fn_args: list[BaseNode],
     _: Node | None = None,
     __: FnLib = {},
   ) -> BaseNode:
-    if len(args_fn_args) == 0:
+    if len(fn_args) == 0:
       return BaseNode(
         type=NodeType.GHOST,
         ghost_value=ghost_id,
       )
     
-    index: int = int(args_fn_args[0].fetch_float())
+    index: int = int(fn_args[0].fetch_float())
     if index < 0 or index >= len(args):
       return BaseNode()
     
     return args[index]
   
   def push_fn(
-    args_fn_args: list[BaseNode],
+    fn_args: list[BaseNode],
     _: Node | None = None,
     __: FnLib = {},
   ) -> BaseNode:
-    if len(args_fn_args) == 0:
-      args_fn_args.append(BaseNode())
+    if len(fn_args) == 0:
+      fn_args.append(BaseNode())
     
-    value: BaseNode = args_fn_args[0]
-    if len(args_fn_args) == 1:
+    value: BaseNode = fn_args[0]
+    if len(fn_args) == 1:
       args.append(value)
       return BaseNode(
         type=NodeType.BOOLEAN,
         bool_value=True,
       )
     
-    index: int = int(args_fn_args[1].fetch_float())
+    index: int = int(fn_args[1].fetch_float())
     if index < 0 or index >= len(args):
       return BaseNode(
         type=NodeType.BOOLEAN,
@@ -68,8 +68,27 @@ def collection(
       bool_value=True
     )
 
+  def pop_fn(
+    fn_args: list[BaseNode],
+    _: Node | None = None,
+    __: FnLib = {},
+  ) -> BaseNode:
+    fn_args.append(BaseNode(
+      type=NodeType.NUMERIC,
+      float_value=len(args) - 1
+    ))
+
+    index: int = int(fn_args[0].fetch_float())
+    if index < 0 or index >= len(args):
+      return BaseNode()
+    
+    result = args.pop(index)
+
+    return result
+
   fn_lib[f"{ghost_id}:primary"] = fetch_fn
   fn_lib[f"{ghost_id}:push"] = push_fn
+  fn_lib[f"{ghost_id}:pop"] = pop_fn
 
   return BaseNode(
     type=NodeType.GHOST,
@@ -110,11 +129,6 @@ def push(
   push_index: int | None = None
   if len(args) > 2:
     push_index = int(args[2].fetch_float())
-    if push_index < 0 or push_index >= len(args):
-      return BaseNode(
-        type=NodeType.BOOLEAN,
-        bool_value=False
-      )
   
   fn_args: list[BaseNode] = [push_value]
   if push_index is not None:
@@ -128,4 +142,32 @@ def push(
     type=NodeType.BOOLEAN,
     bool_value=True
   )
+
+@register_fn(fn_exports)
+def pop(
+  args: list[BaseNode],
+  _: Node | None = None,
+  fn_lib: FnLib = {},
+) -> BaseNode:
+  if len(args) == 0: return BaseNode()
+
+  collection_arg = args[0]
+  ghost_value: str | None = collection_arg.ghost_value
+  if ghost_value is None: return BaseNode()
+  
+  pop_fn: ExecFn | None = fn_lib.get(f"{ghost_value}:pop")
+  if pop_fn is None: return BaseNode()
+  
+  push_index: int | None = None
+  if len(args) > 1:
+    push_index = int(args[1].fetch_float())
+  
+  fn_args: list[BaseNode] = []
+  if push_index is not None:
+    fn_args.append(BaseNode(
+      type=NodeType.NUMERIC,
+      float_value=float(push_index)
+    ))
+  
+  return pop_fn(fn_args, None, fn_lib)
 

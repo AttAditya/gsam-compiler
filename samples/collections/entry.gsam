@@ -1,3 +1,27 @@
+component
+ "print array"
+ "args"
+ script
+  saves
+   "idx"
+   0
+  loop
+   not_equals
+    idx
+    7
+   script
+    output
+     nums
+      idx
+     " "
+    saves
+     "idx"
+     add
+      idx
+      1
+  output
+   endline
+
 saves
  "nums"
  collection
@@ -7,13 +31,28 @@ saves
   4
   5
 
+print array
+
 push
  nums
  20
 
-output
- "num: "
+print array
+
+pop
  nums
-  5
- endline
+
+print array
+
+push
+ nums
+ 30
+
+print array
+
+pop
+ nums
+ 2
+
+print array
 
