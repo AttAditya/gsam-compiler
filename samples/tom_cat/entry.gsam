@@ -1,0 +1,23 @@
+component
+ :tom
+ :args
+ script
+  loop
+   true
+   script
+    saves
+     :inp
+     input
+      "You: "
+    output
+     "Tom: "
+     inp
+     endline
+    if
+     equals
+      inp
+      "bye"
+     returns
+      0
+
+tom

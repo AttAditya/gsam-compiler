@@ -1,3 +1,4 @@
+from src.models.node_signal import NodeSignal
 from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
 from src.internals.registry import (
@@ -20,10 +21,15 @@ def loop(
   if condition_node is None: return node.next
 
   condition, loop_node = condition_node.execute(fn_lib, ho_lib)
-  
-  while condition.fetch_bool() and loop_node:
-    loop_node.execute(fn_lib, ho_lib)
-    condition, loop_node = condition_node.execute(fn_lib, ho_lib)
-  
-  return node.next
+  if not condition.fetch_bool(): return node.next
+  if loop_node is None: return node.next
+
+  result, _ = loop_node.execute(fn_lib, ho_lib)
+  if result.signal == NodeSignal.RETURN:
+    return Node(
+      executes="base",
+      value=result,
+    )
+
+  return node
 
