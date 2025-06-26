@@ -17,6 +17,10 @@ git add .
 git commit -m "version bump"
 echo "🔄 Changes committed successfully."
 
+echo "🧹 Cleaning up old build artifacts..."
+rm -rf dist/*
+echo "🧹 Old build artifacts cleaned up."
+
 echo "🚀 Building the package..."
 python3 -m build
 twine upload dist/*
