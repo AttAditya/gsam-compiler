@@ -11,4 +11,4 @@ git commit -m "version bump"
 python3 -m build
 twine upload dist/*
 
-exit "✅ Successfully built and uploaded the package."
+echo "✅ Successfully built and uploaded the package."
