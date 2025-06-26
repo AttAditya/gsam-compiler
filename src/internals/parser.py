@@ -6,6 +6,9 @@ def identify(content: str) -> str:
   if len(content) > 2 and content[0] == '"' and content[-1] == '"':
     return NodeType.TEXT
   
+  if content[0] == ":":
+    return NodeType.TEXT
+  
   nums: int = 0
   decimals: int = 0
   hyphens: int = 0
@@ -48,8 +51,10 @@ def convert(
   bool_value: bool | None = None
 
   if content_type == NodeType.TEXT:
-    str_value = content[1:-1]
-    
+    if content[0] == ":":
+      str_value = content[1:]
+    else:
+      str_value = content[1:-1]
   if content_type == NodeType.NUMERIC:
     float_value = float(content)
   

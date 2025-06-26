@@ -4,6 +4,7 @@ from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
 from src.internals.registry import (
   register_fn,
+  rename_fn,
   setup as setup_registry
 )
 
@@ -107,5 +108,83 @@ def not_equals(
   return BaseNode(
     type=NodeType.BOOLEAN,
     bool_value=not equals(args, None, __).fetch_bool()
+  )
+
+@register_fn(fn_exports)
+def less_than(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) < 2:
+    return BaseNode(type=NodeType.BOOLEAN, bool_value=False)
+  
+  result: bool = args[0].fetch_float() < args[1].fetch_float()
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    bool_value=result
+  )
+
+@register_fn(fn_exports)
+def greater_than(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) < 2:
+    return BaseNode(type=NodeType.BOOLEAN, bool_value=False)
+  
+  result: bool = args[0].fetch_float() > args[1].fetch_float()
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    bool_value=result
+  )
+
+@register_fn(fn_exports)
+def less_than_equal(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) < 2:
+    return BaseNode(type=NodeType.BOOLEAN, bool_value=False)
+  
+  result: bool = args[0].fetch_float() <= args[1].fetch_float()
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    bool_value=result
+  )
+
+@register_fn(fn_exports)
+def greater_than_equal(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) < 2:
+    return BaseNode(type=NodeType.BOOLEAN, bool_value=False)
+  
+  result: bool = args[0].fetch_float() >= args[1].fetch_float()
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    bool_value=result
+  )
+
+@register_fn(fn_exports)
+@rename_fn("not")
+def not_fn(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  if len(args) < 1:
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=True
+    )
+  
+  return BaseNode(
+    type=NodeType.BOOLEAN,
+    bool_value=not args[0].fetch_bool()
   )
 

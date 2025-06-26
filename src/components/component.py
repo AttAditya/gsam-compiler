@@ -9,13 +9,22 @@ from src.internals.registry import (
   setup as setup_registry
 )
 
+from .collection import collection
+
 fn_exports: list[ExecFn] = []
 ho_exports: list[HOExecFn] = []
 def setup(fn_lib: FnLib, ho_lib: HOLib) -> None:
   setup_registry(fn_lib, ho_lib, fn_exports, ho_exports)
 
 @register_fn(fn_exports)
-def script(*_) -> BaseNode:
+def script(
+  args: list[BaseNode],
+  _: Node | None = None,
+  __: FnLib = {},
+) -> BaseNode:
+  for arg in args:
+    if arg.signal == NodeSignal.RETURN:
+      return arg
   return BaseNode()
 
 @register_ho(ho_exports)
@@ -41,28 +50,30 @@ def component(
   def component_fn(
     args: list[BaseNode],
     _: Node | None = None,
-    __: FnLib = {},
+    fn_lib: FnLib = {},
   ) -> BaseNode:
     if not script_node:
       return BaseNode()
     
-    def args_fn(
-      args_fn_args: list[BaseNode],
-      _: Node | None = None,
-      __: FnLib = {},
-    ) -> BaseNode:
-      index: int = int(args_fn_args[0].fetch_float())
-      if index < 0 or index >= len(args):
-        return BaseNode()
-      
-      return args[index]
+    local_fn_scope: FnLib = {}
+    for fn_keys in fn_lib:
+      local_fn_scope[fn_keys] = fn_lib[fn_keys]
 
-    fn_lib[args_name.fetch_str()] = args_fn
+    saves([
+      BaseNode(
+        type=NodeType.TEXT,
+        str_value=args_name.fetch_str()
+      ),
+      collection(args, None, local_fn_scope),
+    ], None, local_fn_scope)
     
-    return script_node.execute(
-      fn_lib,
+    result: BaseNode = script_node.execute(
+      local_fn_scope,
       ho_lib,
     )[0]
+
+    result.signal = None
+    return result
   
   fn_lib[component_name.fetch_str()] = component_fn
   
@@ -76,12 +87,12 @@ def saves(
 ) -> BaseNode:
   if len(args) <= 1:
     return BaseNode()
-  
+
   name: str = args[0].fetch_str()
   value: BaseNode = args[1]
 
   def variable_fn(
-    args: list[BaseNode],
+    fn_args: list[BaseNode],
     node: Node | None = None,
     fn_lib: FnLib = {},
   ) -> BaseNode:
@@ -92,8 +103,11 @@ def saves(
     if f"{ghost_value}:primary" not in fn_lib:
       return value
     
-    variable_fn = fn_lib[f"{ghost_value}:primary"]
-    return variable_fn(args, node, fn_lib)
+    return fn_lib[f"{ghost_value}:primary"](
+      fn_args,
+      node,
+      fn_lib
+    )
 
   fn_lib[name] = variable_fn
   return value

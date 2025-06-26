@@ -52,30 +52,25 @@ class Node(BaseNode):
   ) -> tuple[BaseNode, Node | None]:
     if self.high_order:
       next_node = self.high_order_execute(fn_lib, ho_lib)
-      return BaseNode(), next_node
-    
+      if next_node is None: return BaseNode(), self.next
+      return next_node.execute(
+        fn_lib,
+        ho_lib
+      )
+
     current: Node | None = self.script
     args: list[BaseNode] = []
     result: BaseNode = BaseNode()
 
     while current is not None:
-      next_node = None
+      value, next_node = current.execute(fn_lib, ho_lib)
+      args.append(value)
 
-      if not current.high_order:
-        value, next_node = current.execute(fn_lib, ho_lib)
-        args.append(value)
+      if value.signal == NodeSignal.RETURN:
+        result = value
+        next_node = None
 
-        if value.signal == NodeSignal.RETURN:
-          result = value
-          break
-      else:
-        next_node = current.high_order_execute(fn_lib, ho_lib)
-      
       current = next_node
-
-    if result.signal == NodeSignal.RETURN:
-      result.signal = None
-      return result, self.next
 
     if self.executes is None:
       return result, self.next

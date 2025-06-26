@@ -23,16 +23,22 @@ def if_fn(
 
   condition, true_node = condition_node.execute(fn_lib, ho_lib)
   if true_node is None: return node.next
+  false_node: Node | None = true_node.next
 
-  if condition.fetch_bool():
-    true_node.execute(fn_lib, ho_lib)
-    condition, false_node = condition_node.execute(fn_lib, ho_lib)
-  else:
-    false_node = true_node.next
-    if false_node is None: return node.next
-    false_node.execute(fn_lib, ho_lib)
+  true_node = Node(
+    executes= true_node.executes,
+    script= true_node.script,
+    next_node=node.next,
+  )
+  if false_node is not None:
+    false_node = Node(
+      executes= false_node.executes,
+      script= false_node.script,
+      next_node=node.next,
+    )
   
-  return node.next
-
-
+  if condition.fetch_bool():
+    return true_node
+  
+  return false_node
 
