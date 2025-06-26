@@ -68,6 +68,26 @@ def collection(
       bool_value=True
     )
 
+  def update_fn(
+    fn_args: list[BaseNode],
+    _: Node | None = None,
+    __: FnLib = {},
+  ) -> BaseNode:
+    value: BaseNode = fn_args[0]
+    index: int = int(fn_args[1].fetch_float())
+
+    if index < 0 or index >= len(args):
+      return BaseNode(
+        type=NodeType.BOOLEAN,
+        bool_value=False,
+      )
+    
+    args[index] = value
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=True
+    )
+
   def pop_fn(
     fn_args: list[BaseNode],
     _: Node | None = None,
@@ -83,12 +103,19 @@ def collection(
       return BaseNode()
     
     result = args.pop(index)
-
     return result
+  
+  def size_fn(*_) -> BaseNode:
+    return BaseNode(
+      type=NodeType.NUMERIC,
+      float_value=float(len(args))
+    )
 
   fn_lib[f"{ghost_id}:primary"] = fetch_fn
   fn_lib[f"{ghost_id}:push"] = push_fn
   fn_lib[f"{ghost_id}:pop"] = pop_fn
+  fn_lib[f"{ghost_id}:update"] = update_fn
+  fn_lib[f"{ghost_id}:size"] = size_fn
 
   return BaseNode(
     type=NodeType.GHOST,
@@ -137,11 +164,7 @@ def push(
       float_value=float(push_index)
     ))
   
-  push_fn(fn_args, None, fn_lib)
-  return BaseNode(
-    type=NodeType.BOOLEAN,
-    bool_value=True
-  )
+  return push_fn(fn_args, None, fn_lib)
 
 @register_fn(fn_exports)
 def pop(
@@ -170,4 +193,64 @@ def pop(
     ))
   
   return pop_fn(fn_args, None, fn_lib)
+
+@register_fn(fn_exports)
+def update(
+  args: list[BaseNode],
+  _: Node | None = None,
+  fn_lib: FnLib = {},
+) -> BaseNode:
+  if len(args) == 0:
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=False
+    )
+
+  collection_arg = args[0]
+  ghost_value: str | None = collection_arg.ghost_value
+  if ghost_value is None:
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=False
+    )
+  
+  update_fn: ExecFn | None = fn_lib.get(f"{ghost_value}:update")
+  if update_fn is None:
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=False
+    )
+  
+  if len(args) < 3:
+    return BaseNode(
+      type=NodeType.BOOLEAN,
+      bool_value=False
+    )
+  
+  update_value = args[1]
+  push_index = int(args[2].fetch_float())
+  fn_args: list[BaseNode] = [
+    update_value, BaseNode(
+      type=NodeType.NUMERIC,
+      float_value=float(push_index)
+    )
+  ]
+  
+  return update_fn(fn_args, None, fn_lib)
+
+@register_fn(fn_exports)
+def size(
+  args: list[BaseNode],
+  _: Node | None = None,
+  fn_lib: FnLib = {},
+) -> BaseNode:
+  if len(args) == 0: return BaseNode()
+
+  collection_arg = args[0]
+  ghost_value: str | None = collection_arg.ghost_value
+  if ghost_value is None: return BaseNode()
+  
+  size_fn: ExecFn | None = fn_lib.get(f"{ghost_value}:size")
+  if size_fn is None: return BaseNode()
+  return size_fn([], None, fn_lib)
 

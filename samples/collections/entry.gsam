@@ -5,10 +5,17 @@ component
   saves
    "idx"
    0
+  output
+   "Array("
+   size
+    nums
+   "): "
+   endline
   loop
    not_equals
     idx
-    7
+    size
+     nums
    script
     output
      nums
@@ -20,6 +27,7 @@ component
       idx
       1
   output
+   endline
    endline
 
 saves
@@ -53,6 +61,13 @@ print array
 pop
  nums
  2
+
+print array
+
+update
+ nums
+ 25
+ 3
 
 print array
 
