@@ -1,3 +1,14 @@
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  echo "❌ Can not push, there are uncommitted changes."
+  exit 1
+fi
+
 python3 -m bump
+
+git add .
+git commit -m "version bump"
+
 python3 -m build
 twine upload dist/*
+
+exit "✅ Successfully built and uploaded the package."
