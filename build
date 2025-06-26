@@ -3,12 +3,24 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-python3 -m bump
+clear
 
+echo "🔨 Building and uploading the package..."
+
+echo "📦 Bumping version..."
+python3 -m bump
+echo "📦 Version bumped successfully."
+echo "Version: $(cat ./VERSION)"
+
+echo "🔄 Committing changes to git..."
 git add .
 git commit -m "version bump"
+echo "🔄 Changes committed successfully."
 
+echo "🚀 Building the package..."
 python3 -m build
 twine upload dist/*
+echo "🚀 Package built and uploaded successfully."
 
+clear
 echo "✅ Successfully built and uploaded the package."
