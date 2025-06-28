@@ -1,5 +1,7 @@
 # GSAM Compiler
 
+> **[Checkout Demo: https://youtu.be/JxTBTcGciJ0](https://youtu.be/JxTBTcGciJ0)**
+
 GSAM (Graph Script Ain't Markup) is a simple, scripting language designed for creating and executing logic flows through a component-based syntax. It powers scripting via minimal, readable components that map easily to visual nodes — perfect for both beginners and experienced developers building logic-driven applications.
 
 # 📘 What is GSAM?
