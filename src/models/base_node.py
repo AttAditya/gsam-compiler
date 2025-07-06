@@ -31,6 +31,17 @@ class BaseNode:
 
     self.ghost_value = ghost_value
 
+  def clone(self: Self) -> Self:
+    return BaseNode(
+      base=self.base,
+      type=self.type,
+      str_value=self.str_value,
+      float_value=self.float_value,
+      bool_value=self.bool_value,
+      ghost_value=self.ghost_value,
+      signal=self.signal,
+    )
+
   def fetch_str(self: Self) -> str:
     if self.type == NodeType.NUMERIC:
       return str(self.fetch_float())

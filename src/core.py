@@ -12,5 +12,8 @@ setup(fn_lib, ho_lib)
 def run_source(source: str) -> None:
   source_lines: list[str] = source.split("\n")
   root_script: Node = parse(source_lines, set(ho_lib.keys()))
-  root_script.execute(fn_lib, ho_lib)
+  try:
+    root_script.execute(fn_lib, ho_lib)
+  except Exception as e:
+    print(f"\n\nEngine Error")
 

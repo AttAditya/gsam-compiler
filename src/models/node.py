@@ -31,6 +31,15 @@ class Node(BaseNode):
     self.next = next_node
     self.high_order = high_order
 
+  def clone(self: Self) -> Self:
+    return Node(
+      executes=self.executes,
+      script=self.script.clone() if self.script else None,
+      value=self.value.clone() if self.value else None,
+      next_node=self.next if self.next else None,
+      high_order=self.high_order,
+    )
+
   def high_order_execute(
     self: Self,
     fn_lib: FnLib,

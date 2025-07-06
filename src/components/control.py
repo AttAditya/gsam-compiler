@@ -25,17 +25,11 @@ def if_fn(
   if true_node is None: return node.next
   false_node: Node | None = true_node.next
 
-  true_node = Node(
-    executes= true_node.executes,
-    script= true_node.script,
-    next_node=node.next,
-  )
+  true_node = true_node.clone()
+  true_node.next = None
+  
   if false_node is not None:
-    false_node = Node(
-      executes= false_node.executes,
-      script= false_node.script,
-      next_node=node.next,
-    )
+    false_node = false_node.clone()
   
   if condition.fetch_bool():
     return true_node
