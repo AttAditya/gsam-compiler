@@ -29,7 +29,8 @@ def output(
   print(
     *converted_args,
     sep="",
-    end=""
+    end="",
+    flush=True
   )
 
   return BaseNode()
