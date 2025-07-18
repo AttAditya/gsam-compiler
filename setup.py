@@ -17,11 +17,11 @@ setup(
   python_requires='>=3.8',
   entry_points={
     'console_scripts': [
-      'gsamc=src.cli:main',
-      'gsam=src.cli:main',
-      'gsam-compiler=src.cli:main',
-      'gsam-compiler-cli=src.cli:main',
-      'gsamc-cli=src.cli:main',
+      'gsamc=gsam.cli:main',
+      'gsam=gsam.cli:main',
+      'gsam-compiler=gsam.cli:main',
+      'gsam-compiler-cli=gsam.cli:main',
+      'gsamc-cli=gsam.cli:main',
     ],
   }
 )
