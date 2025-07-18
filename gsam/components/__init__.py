@@ -1,4 +1,4 @@
-from src.models.node import FnLib, HOLib
+from gsam.models.node import FnLib, HOLib
 
 from .console import setup as setup_clio
 from .literal import setup as setup_literals

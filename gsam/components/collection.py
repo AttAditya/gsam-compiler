@@ -1,9 +1,9 @@
-from src.models.node_type import NodeType
-from src.models.base_node import BaseNode
-from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
+from gsam.models.node_type import NodeType
+from gsam.models.base_node import BaseNode
+from gsam.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
-from src.internals.ghost import generate_ghost_id
-from src.internals.registry import (
+from gsam.internals.ghost import generate_ghost_id
+from gsam.internals.registry import (
   register_fn,
   setup as setup_registry
 )

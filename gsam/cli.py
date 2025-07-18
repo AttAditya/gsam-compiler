@@ -1,7 +1,7 @@
 from typing import Self
 from sys import argv
 
-from src.core import run_source
+from gsam.core import run_source
 
 class CLIOption:
   option: str

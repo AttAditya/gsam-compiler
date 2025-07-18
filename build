@@ -21,14 +21,10 @@ echo "🧹 Cleaning up old build artifacts..."
 rm -rf dist/*
 echo "🧹 Old build artifacts cleaned up."
 
-mv src gsam
-
 echo "🚀 Building the package..."
 python3 -m build
 twine upload dist/*
 echo "🚀 Package built and uploaded successfully."
-
-mv gsam src
 
 clear
 echo "✅ Successfully built and uploaded the package."

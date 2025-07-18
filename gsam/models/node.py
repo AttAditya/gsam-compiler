@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Self, TypeAlias, Callable
 
-from .node_type import NodeType
-from .base_node import BaseNode
-from .node_signal import NodeSignal
+from gsam.models.node_type import NodeType
+from gsam.models.base_node import BaseNode
+from gsam.models.node_signal import NodeSignal
 
 class Node(BaseNode):
   executes: str | None
@@ -31,7 +31,7 @@ class Node(BaseNode):
     self.next = next_node
     self.high_order = high_order
 
-  def clone(self: Self) -> Self:
+  def clone(self: Self) -> Node:
     return Node(
       executes=self.executes,
       script=self.script.clone() if self.script else None,

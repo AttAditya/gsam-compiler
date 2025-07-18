@@ -1,6 +1,6 @@
-from src.models.node import HOExecFn, ExecFn, FnLib, HOLib, Node
+from gsam.models.node import HOExecFn, ExecFn, FnLib, HOLib, Node
 
-from src.internals.registry import (
+from gsam.internals.registry import (
   register_ho,
   rename_ho,
   setup as setup_registry

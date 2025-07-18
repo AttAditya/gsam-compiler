@@ -1,6 +1,6 @@
-from src.models.base_node import BaseNode
-from src.models.node_type import NodeType
-from src.models.node import Node
+from gsam.models.base_node import BaseNode
+from gsam.models.node_type import NodeType
+from gsam.models.node import Node
 
 def identify(content: str) -> str:
   if len(content) > 2 and content[0] == '"' and content[-1] == '"':

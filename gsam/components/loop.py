@@ -1,7 +1,7 @@
-from src.models.node_signal import NodeSignal
-from src.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
+from gsam.models.node_signal import NodeSignal
+from gsam.models.node import Node, FnLib, ExecFn, HOLib, HOExecFn
 
-from src.internals.registry import (
+from gsam.internals.registry import (
   register_ho,
   setup as setup_registry
 )

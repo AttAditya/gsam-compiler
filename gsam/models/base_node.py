@@ -1,6 +1,7 @@
+from __future__ import annotations
 from typing import Self
 
-from .node_type import NodeType
+from gsam.models.node_type import NodeType
 
 class BaseNode:
   type: str
@@ -31,7 +32,7 @@ class BaseNode:
 
     self.ghost_value = ghost_value
 
-  def clone(self: Self) -> Self:
+  def clone(self: Self) -> BaseNode:
     return BaseNode(
       base=self.base,
       type=self.type,
