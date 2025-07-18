@@ -26,5 +26,4 @@ python3 -m build
 twine upload dist/*
 echo "🚀 Package built and uploaded successfully."
 
-clear
 echo "✅ Successfully built and uploaded the package."
