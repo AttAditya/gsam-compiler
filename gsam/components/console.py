@@ -48,7 +48,10 @@ def input_fn(
   if len(args) >= 1:
     prompt = args[0].fetch_str()
 
-  input_value = input(prompt)
+  if prompt:
+    print(prompt, end="", flush=True)
+  
+  input_value = input()
 
   return BaseNode(
     type=NodeType.TEXT,
