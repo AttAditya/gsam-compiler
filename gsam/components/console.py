@@ -41,9 +41,6 @@ def input_fn(
   args: list[BaseNode],
   *_,
 ) -> BaseNode:
-  if not args:
-    return BaseNode()
-  
   prompt: str = ""
   if len(args) >= 1:
     prompt = args[0].fetch_str()
